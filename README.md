@@ -57,6 +57,7 @@ Este es el componente principal de la aplicación:
 - **Integración de Componentes:** Integra todos los componentes, incluyendo `Header`, `MenuItem`, `OrderContents`, `TipPercentageForm`, y `OrderTotals`.
 - **Gestión de Estado:** Utiliza el hook `useOrder` para manejar el estado de la orden y la propina y pasa las funciones y valores derivados a los componentes correspondientes.
 
+
 ## Notas Adicionales
 
 - **Estilización:** La aplicación utiliza TailwindCSS para estilizar todos los componentes de forma modular y personalizada.
