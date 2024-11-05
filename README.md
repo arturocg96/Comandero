@@ -1,50 +1,64 @@
-# React + TypeScript + Vite
+# Instrucciones para el Proyecto: Calculadora de Propinas y Consumo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
 
-Currently, two official plugins are available:
+**Calculadora de Propinas y Consumo** es una aplicación web que permite a los usuarios seleccionar artículos de un menú, calcular el costo total de su orden, añadir una propina y visualizar el total a pagar. La aplicación está construida en React y utiliza TypeScript para mayor seguridad en el manejo de datos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Descripción de Archivos
 
-## Expanding the ESLint configuration
+### 1. `Header.tsx`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Función principal:** Muestra un encabezado con el título de la aplicación: "Calculadora de Propinas y Consumo". Utiliza clases de TailwindCSS para estilizar el encabezado de forma atractiva.
 
-- Configure the top-level `parserOptions` property like this:
+### 2. `MenuItem.tsx`
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Props:** Recibe un objeto `item` (con propiedades `id`, `name`, `price`) y una función `addItem` que permite añadir el artículo al pedido.
+- **Función principal:** Muestra un botón que representa cada ítem del menú, con el nombre del artículo y su precio.
+- **Botón:** Incluye un botón que, al hacer clic, añade el artículo a la orden.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 3. `db.ts`
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Este archivo simula una base de datos y exporta un array de objetos de artículos del menú. Cada artículo incluye:
+- `id`: ID único del artículo.
+- `name`: Nombre del artículo.
+- `price`: Precio del artículo.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 4. `useOrder.ts`
+
+Este hook personalizado maneja el estado y la lógica de la orden:
+- **Funciones de Orden:**
+  - `addItem`: Agrega un artículo a la orden o incrementa su cantidad si ya existe en la orden.
+  - `removeItem`: Elimina un artículo de la orden.
+  - `placeOrder`: Vacía la orden y reinicia el valor de la propina.
+- **Estados Derivados:**
+  - `tip`: Almacena el porcentaje de propina seleccionado.
+  - `order`: Mantiene la lista de artículos en la orden.
+
+### 5. `OrderContents.tsx`
+
+- **Props:** Recibe la lista de artículos de la orden (`order`) y la función `removeItem`.
+- **Función principal:** Muestra una lista de los artículos seleccionados en la orden, incluyendo la cantidad, el precio total y un botón para eliminar cada artículo.
+
+### 6. `TipPercentageForm.tsx`
+
+- **Props:** Recibe `tip` y `setTip` para gestionar el porcentaje de propina.
+- **Función principal:** Muestra una lista de opciones de propina (10%, 20%, 50%) para que el usuario seleccione una. Al cambiar la selección, el porcentaje de propina se actualiza en el estado.
+
+### 7. `OrderTotals.tsx`
+
+Este componente calcula y muestra los totales de la orden:
+- **Props:** Recibe la lista de artículos en la orden (`order`), el porcentaje de propina (`tip`) y la función `placeOrder`.
+- **Cálculos:** Utiliza `useMemo` para calcular el subtotal de la orden, la propina y el total a pagar, optimizando los cálculos.
+- **Botón:** Incluye un botón para guardar la orden y resetear el estado de la orden y la propina.
+
+### 8. `App.tsx`
+
+Este es el componente principal de la aplicación:
+- **Integración de Componentes:** Integra todos los componentes, incluyendo `Header`, `MenuItem`, `OrderContents`, `TipPercentageForm`, y `OrderTotals`.
+- **Gestión de Estado:** Utiliza el hook `useOrder` para manejar el estado de la orden y la propina y pasa las funciones y valores derivados a los componentes correspondientes.
+
+## Notas Adicionales
+
+- **Estilización:** La aplicación utiliza TailwindCSS para estilizar todos los componentes de forma modular y personalizada.
+- **Prevención de Duplicados en la Orden:** La función `addItem` evita duplicados en la orden incrementando la cantidad de un artículo existente en lugar de añadirlo nuevamente.
+- **Propinas Personalizadas:** La aplicación permite que el usuario seleccione un porcentaje de propina entre opciones predefinidas.
